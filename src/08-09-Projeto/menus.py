@@ -19,8 +19,8 @@ def menu():
         print("3. Registrar Participação") 
         print("4. Listar Projetos")
         print("5. Listar Alunos")
-        print("6. Listar Participacoes de um aluno")
-        print("7. Listar Participacoes em um projeto")
+        print("6. Buscar Participacoes de um aluno")
+        print("7. Buscar Participacoes em um projeto")
         print("0. Sair")
 
         escolha = input("Escolha uma opcao: ")
@@ -57,7 +57,7 @@ def menu():
 
             case "7":
                 print(">> Opcao 7: Buscar por Projeto")
-                input_codigo = input("Digite o codigo do projeto: ")
+                input_codigo = int(input("Digite o codigo do projeto: "))
                 if not buscar_participacao_projeto(participacoes, input_codigo):
                     print("Nenhuma participação encontrada neste projeto.")
         

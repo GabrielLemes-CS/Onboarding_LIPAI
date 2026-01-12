@@ -84,7 +84,7 @@ def cadastrar_projeto(projetos):
         return False
     
     with open("projetos.csv", "a") as arquivo:
-        arquivo.write(f"{cod_proj},{titulo},{responsavel}\n")
+        arquivo.write(f"\n{cod_proj},{titulo},{responsavel}")
         projetos.append(projeto(cod_proj, titulo, responsavel))
         return True
     return False
@@ -131,7 +131,7 @@ def cadastrar_participacao(participacoes,alunos,projetos):
             break
 
     with open("participacoes.csv", "a") as arquivo:
-        arquivo.write(f"{cod_part},{data_inicio},{data_fim},{prontuario},{temp_cod_projeto}\n")
+        arquivo.write(f"\n{cod_part},{data_inicio},{data_fim},{prontuario},{temp_cod_projeto}")
         return True
     return False
 
@@ -150,7 +150,7 @@ def cadastrar_aluno(alunos):
         return False
 
     with open("alunos.csv", "a") as arquivo:
-        arquivo.write(f"{prontuario},{nome},{email}\n")
+        arquivo.write(f"\n{prontuario},{nome},{email}")
         alunos.append(aluno(prontuario, nome, email))
         return True
     return False
