@@ -6,7 +6,7 @@ from models import (
 # Funções para preencher listas de objetos a partir dos arquivos CSV
 def preencher_alunos():
     alunos = []
-    with open("alunos.csv", "r") as arquivo:
+    with open("data/alunos.csv", "r") as arquivo:
         for linha in arquivo:
             prontuario, nome, email = linha.strip().split(",")
             alunos.append(aluno(prontuario, nome, email))
@@ -14,7 +14,7 @@ def preencher_alunos():
 
 def preencher_projetos():
     projetos = []
-    with open("projetos.csv", "r") as arquivo:
+    with open("data/projetos.csv", "r") as arquivo:
         for linha in arquivo:
             codigo, titulo, responsavel = linha.strip().split(",")
             projetos.append(projeto(codigo, titulo, responsavel))
@@ -23,7 +23,7 @@ def preencher_projetos():
 def preencher_participacoes(alunos, projetos):
     participacoes = []
 
-    with open("participacoes.csv", "r") as arquivo:
+    with open("data/participacoes.csv", "r") as arquivo:
         for linha in arquivo:
             codigo, data_inicio, data_fim, prontuario, cod_projeto = linha.strip().split(",")
 
@@ -83,7 +83,7 @@ def cadastrar_projeto(projetos):
         print("Erro: nenhum campo pode estar vazio.")
         return False
     
-    with open("projetos.csv", "a") as arquivo:
+    with open("data/projetos.csv", "a") as arquivo:
         arquivo.write(f"\n{cod_proj},{titulo},{responsavel}")
         projetos.append(projeto(cod_proj, titulo, responsavel))
         return True
@@ -130,7 +130,7 @@ def cadastrar_participacao(participacoes,alunos,projetos):
             projeto.participacoes.append(participacoes[-1])
             break
 
-    with open("participacoes.csv", "a") as arquivo:
+    with open("data/participacoes.csv", "a") as arquivo:
         arquivo.write(f"\n{cod_part},{data_inicio},{data_fim},{prontuario},{temp_cod_projeto}")
         return True
     return False
@@ -149,7 +149,7 @@ def cadastrar_aluno(alunos):
         print("Erro: nenhum campo pode estar vazio.")
         return False
 
-    with open("alunos.csv", "a") as arquivo:
+    with open("data/alunos.csv", "a") as arquivo:
         arquivo.write(f"\n{prontuario},{nome},{email}")
         alunos.append(aluno(prontuario, nome, email))
         return True
