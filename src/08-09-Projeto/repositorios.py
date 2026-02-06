@@ -40,7 +40,8 @@ def preencher_participacoes(alunos, projetos):
                     break
 
             if aluno_encontrado and projeto_encontrado:
-                p = participacao(codigo, data_inicio, data_fim, aluno_encontrado, projeto_encontrado)
+                p = participacao(codigo, data_inicio, data_fim, 
+                                 aluno_encontrado, projeto_encontrado)
 
                 participacoes.append(p)
             elif not aluno_encontrado:
