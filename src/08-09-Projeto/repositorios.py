@@ -27,6 +27,7 @@ def preencher_participacoes(alunos, projetos):
         for linha in arquivo:
             codigo, data_inicio, data_fim, prontuario, cod_projeto = linha.strip().split(",")
 
+            # Buscar o aluno e o projeto correspondentes, caso não encontrados nada é adicionado a lsita 
             aluno_encontrado = None
             for a in alunos:
                 if a.prontuario == prontuario:
@@ -44,6 +45,7 @@ def preencher_participacoes(alunos, projetos):
                                  aluno_encontrado, projeto_encontrado)
 
                 participacoes.append(p)
+            #objetivo desse bloco é avisar ao usuario que coisas foram adicionadas no csv diretamente
             elif not aluno_encontrado:
                 print(f"Aviso: Aluno com prontuario {prontuario} nao encontrado para a participacao {codigo}.")
             elif not projeto_encontrado:
@@ -56,6 +58,7 @@ def preencher_dados():
     projetos = preencher_projetos()
     participacoes = preencher_participacoes(alunos, projetos)
 
+    #prencher a lista de participações de cada projeto
     for projeto in projetos:
         x = projeto.codigo
         for particao in participacoes:
@@ -74,16 +77,20 @@ def campo_vazio(*campos):
 
 def cadastrar_projeto(projetos):
     cod_proj = input("Digite o codigo do projeto: ")
+    #validar se o codigo do projeto foi escrito seguindo os padrões
     cod_proj = validar_codigo_projeto(cod_proj, projetos)
+    #verificar se o codigo do projeto já existe, se existir a função retorna False e o projeto não é cadastrado
     if(verificar_codigo_projeto(cod_proj, projetos)):
         return False
     titulo = input("Digite o titulo do projeto: ")
     responsavel = input("Digite o nome do responsavel pelo projeto: ")
 
+    #se qualquer um dos campos estiver vazio, a função retorna False e o projeto não é cadastrado
     if campo_vazio(cod_proj, titulo, responsavel):
         print("Erro: nenhum campo pode estar vazio.")
         return False
     
+    #se tudo estiver correto, o projeto é adicionado ao arquivo CSV
     with open("data/projetos.csv", "a") as arquivo:
         arquivo.write(f"\n{cod_proj},{titulo},{responsavel}")
         projetos.append(projeto(cod_proj, titulo, responsavel))
@@ -92,16 +99,20 @@ def cadastrar_projeto(projetos):
 
 def cadastrar_participacao(participacoes,alunos,projetos):
     cod_part = input("Digite o código da participação: ")
+    #outro validador de digitação
     cod_part = validar_codigo_participacao(cod_part, participacoes)
+    #outro verificador de código já existente
     if(verificar_codigo_participacao(cod_part, participacoes)):
         return False
     data_inicio = input("Digite a data de inicio da participacao (DD/MM/AAAA): ")
+    #validador se a data foi escrita corretamente
     data_inicio = validar_data(data_inicio)
     data_fim = input("Digite a data de fim da participacao (DD/MM/AAAA): ")
     data_fim = validar_data(data_fim)
     prontuario = input("Digite o prontuario do aluno: ")
     temp_cod_projeto = input("Digite o codigo do projeto: ")
 
+    #verificar se o aluno e o projeto existem, caso contrário a função retorna False e a participação não é cadastrada
     aluno_encontrado = None
     for a in alunos:
         if a.prontuario == prontuario:
@@ -125,6 +136,7 @@ def cadastrar_participacao(participacoes,alunos,projetos):
         print("Erro: nenhum campo pode estar vazio.")
         return False
     
+    #caso tudo esteja correto, a participação é adicionada à lista de participações e ao arquivo CSV, além de ser adicionada à lista de participações do projeto correspondente
     participacoes.append(participacao(cod_part, data_inicio, data_fim, aluno_encontrado, projeto_encontrado))
     for projeto in projetos:
         if projeto.codigo == temp_cod_projeto:
@@ -221,6 +233,8 @@ def validar_data(data):
     dia  = data[0:2]
     mes  = data[3:5]
     ano  = data[6:10] 
+    #validar se a data tem o formato correto, se os caracteres são dígitos e se os separadores estão no lugar certo, além de verificar se dia, 
+    # mês e ano estão dentro dos limites aceitáveis
     if(len(data) != 10 or not data[0:2].isdigit() or not 
        data[3:5].isdigit() or not data[6:10].isdigit() or 
        data[2] != '/' or data[5] != '/' or dia < '01' or dia > '31' or 
@@ -231,6 +245,7 @@ def validar_data(data):
     return data
 
 def validar_email(email):
+    #validar se o email tem um formato básico, verificando se contém um "@" e um "." depois do "@", além de verificar se o email não está vazio
     if "@" not in email or "." not in email.split("@")[-1]:
         print("Email em formato invalido.")
         temp_email = input("Digite o email novamente: ")
@@ -257,7 +272,7 @@ def verificar_codigo_projeto(codigo, projetos):
             print("Codigo ja cadastrado.")
             return True
     return False
-
+#validar se o código do projeto é um número inteiro positivo e se não esta vazio
 def validar_codigo_projeto(codigo,projetos):
     if not str(codigo).isdigit() or int(codigo) < 1:
         print("Codigo invalido.") 
